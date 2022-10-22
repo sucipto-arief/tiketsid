@@ -51,7 +51,6 @@ export default function ProductScreen(props) {
                         </li>
                         <li>Category: {product.category}</li>
                         <li>Brand: {product.brand}</li>
-                        <li>{product.rating} of {product.numReviews}</li>
                         <li>description: {product.description}</li>
                     </ul>
                 </div>

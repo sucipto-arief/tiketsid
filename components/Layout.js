@@ -36,9 +36,9 @@ export default function Layout({ title, children }) {
 
             <ToastContainer position='bottom-center' limit={1} />
 
-            <div className='flex min-h-screen flex-col justify-between'>
+            <div className='flex min-h-screen flex-col justify-between bg-neutral-50'>
                 <header>
-                    <nav className='flex h-12 items-center px-4 justify-between shadow-md bg-slate-600'>
+                    <nav className='flex h-12 items-center px-4 justify-between shadow-md bg-slate-700'>
                         <Link href={'/'}>
                             <a className='text-2xl ml-4 font-bold'>tikets.id</a>
                         </Link>
@@ -63,7 +63,7 @@ export default function Layout({ title, children }) {
                                     <Menu.Items className='absolute right-0 w-56 origin-top-right bg-white shadow-lg'>
                                         <Menu.Item>
                                             <DropdownLink className='dropdown-link' href={'/profile'}>
-                                                Profile
+                                                Update Profile
                                             </DropdownLink>
                                         </Menu.Item>
                                         <Menu.Item>
