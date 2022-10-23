@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import React from 'react'
+import toRupiah from '@develoka/angka-rupiah-js';
 
 export default function ProductItem({ product, addToCartHandler }) {
     return (
@@ -21,7 +22,7 @@ export default function ProductItem({ product, addToCartHandler }) {
                     </a>
                 </Link>
                 <p className='mb-2'>{product.brand}</p>
-                <p>Rp.{product.price}</p>
+                <p className='mb-2 font-bold'>{toRupiah(product.price, { dot: ',', formal: false, floatingPoint: 0 })}</p>
                 <button
                     className='primary-button'
                     type='button'

@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import toRupiah from '@develoka/angka-rupiah-js'
 
 function CartScreen() {
     const router = useRouter();
@@ -32,7 +32,7 @@ function CartScreen() {
             <h1 className='mb-4 text-xl'>Shopping Cart</h1>
             {cartItems.length === 0 ? (
                 <div>
-                    Cart is empty. <Link href={'/'}>Go shopping</Link>
+                    Keranjang kamu kosong. <Link href={'/'}>Cari Tikets</Link>
                 </div>
             ) : (
                 <div className='grid md:grid-cols-4 md:gap-5'>
@@ -74,7 +74,7 @@ function CartScreen() {
                                                 }
                                             </select>
                                         </td>
-                                        <td className='p-5 text-right'>${item.price}</td>
+                                        <td className='p-5 text-right'>{toRupiah(item.price, { dot: ',', formal: false, floatingPoint: 0 })}</td>
                                         <td className='p-5 text-center'>
                                             <button onClick={() => removeItemHandler(item)}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -90,11 +90,11 @@ function CartScreen() {
                     <div className='card p-5'>
                         <ul>
                             <li>
-                                <div className='pb-3 text-xl'>
+                                <div className='pb-3 font-bold text-lg'>
                                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)})
                                     {' '}
-                                    : $
-                                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                                    : 
+                                    {toRupiah(cartItems.reduce((a, c) => a + c.quantity * c.price, 0),{ dot: ',', formal: false, floatingPoint: 0 })}
                                 </div>
                             </li>
                             <li>

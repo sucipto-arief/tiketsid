@@ -9,6 +9,7 @@ import Layout from '../../components/Layout'
 import Product from '../../models/Product';
 import db from '../../utils/db';
 import { Store } from '../../utils/Store';
+import toRupiah from '@develoka/angka-rupiah-js'
 
 export default function ProductScreen(props) {
     const { product } = props;
@@ -50,7 +51,7 @@ export default function ProductScreen(props) {
                             <h1 className='text-lg'>{product.name}</h1>
                         </li>
                         <li>Category: {product.category}</li>
-                        <li>Brand: {product.brand}</li>
+                        <li>Star: {product.brand}</li>
                         <li>description: {product.description}</li>
                     </ul>
                 </div>
@@ -58,13 +59,13 @@ export default function ProductScreen(props) {
                     <div className='card p-5'>
                         <div className='mb-2 flex justify-between'>
                             <div>Price</div>
-                            <div>${product.price}</div>
+                            <div>{toRupiah(product.price, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                         </div>
                         <div className='mb-2 flex justify-between'>
                             <div>Status</div>
                             <div>{product.countInStock > 0 ? 'In stock' : 'Unvailable'}</div>
                         </div>
-                        <button className='primary-button w-full' onClick={addToCartHandler}>Add to cart</button>
+                        <button className='primary-button w-full' onClick={addToCartHandler}>Pesan Tikets</button>
                     </div>
                 </div>
             </div>
