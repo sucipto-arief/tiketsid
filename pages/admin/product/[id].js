@@ -62,7 +62,7 @@ export default function AdminProductEditScreen() {
         setValue('price', data.price);
         setValue('image', data.image);
         setValue('category', data.category);
-        setValue('brand', data.brand);
+        setValue('brand', data.star);
         setValue('countInStock', data.countInStock);
         setValue('description', data.description);
       } catch (err) {
@@ -104,7 +104,7 @@ export default function AdminProductEditScreen() {
     price,
     category,
     image,
-    brand,
+    star,
     countInStock,
     description,
   }) => {
@@ -116,7 +116,7 @@ export default function AdminProductEditScreen() {
         price,
         category,
         image,
-        brand,
+        star,
         countInStock,
         description,
       });
@@ -243,17 +243,17 @@ export default function AdminProductEditScreen() {
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="brand">brand</label>
+                <label htmlFor="star">star</label>
                 <input
                   type="text"
                   className="w-full"
-                  id="brand"
-                  {...register('brand', {
-                    required: 'Please enter brand',
+                  id="star"
+                  {...register('star', {
+                    required: 'Please enter star',
                   })}
                 />
-                {errors.brand && (
-                  <div className="text-red-500">{errors.brand.message}</div>
+                {errors.star && (
+                  <div className="text-red-500">{errors.star.message}</div>
                 )}
               </div>
               <div className="mb-4">
