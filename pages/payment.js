@@ -10,7 +10,7 @@ export default function PaymentScreen() {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
     const { state, dispatch } = useContext(Store);
     const { cart } = state;
-    const { shippingAddress, paymentMethod } = cart;
+    const { personalData, paymentMethod } = cart;
     const router = useRouter();
 
     const submitHandler = (e) => {
@@ -31,11 +31,11 @@ export default function PaymentScreen() {
     };
 
     useEffect(() => {
-        if (!shippingAddress.address) {
-            return router.push('/shipping');
+        if (!personalData.emailAddress) {
+            return router.push('/personal-data');
         }
         setSelectedPaymentMethod(paymentMethod || '');
-    }, [paymentMethod, router, shippingAddress.address])
+    }, [paymentMethod, router, personalData.emailAddress])
     return (
         <Layout title='Payment Method'>
             <CheckoutWizard activeStep={2} />
@@ -59,7 +59,7 @@ export default function PaymentScreen() {
                     ))}
                 <div className='mb-4 flex justify-between'>
                     <button
-                        onClick={() => router.push('/shipping')}
+                        onClick={() => router.push('/personal-data')}
                         type='button'
                         className='default-button'
                     >

@@ -6,7 +6,7 @@ export const Store = createContext();
 const initialState = {
     cart: Cookies.get('cart')
         ? JSON.parse(Cookies.get('cart'))
-        : { cartItems: [], shippingAddress: {}, paymentMethod: '' },
+        : { cartItems: [], personalData: {}, paymentMethod: '' },
 };
 
 function reducer(state, action) {
@@ -36,7 +36,7 @@ function reducer(state, action) {
                 ...state,
                 cart: {
                     cartItems: [],
-                    shippingAddress: { location: {} },
+                    personalData: { location: {} },
                     paymentMethod: '',
                 },
             };
@@ -48,8 +48,8 @@ function reducer(state, action) {
                 ...state,
                 cart: {
                     ...state.cart,
-                    shippingAddress: {
-                        ...state.cart.shippingAddress,
+                    personalData: {
+                        ...state.cart.personalData,
                         ...action.payload,
                     },
                 }

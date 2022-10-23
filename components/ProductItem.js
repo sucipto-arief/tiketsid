@@ -21,7 +21,7 @@ export default function ProductItem({ product, addToCartHandler }) {
                         <h2 className='text-lg'>{product.name}</h2>
                     </a>
                 </Link>
-                <p className='mb-2'>{product.brand}</p>
+                <p className='mb-2'>{product.star}</p>
                 <p className='mb-2 font-bold'>{toRupiah(product.price, { dot: ',', formal: false, floatingPoint: 0 })}</p>
                 <button
                     className='primary-button'

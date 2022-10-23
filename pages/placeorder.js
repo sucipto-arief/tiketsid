@@ -9,17 +9,17 @@ import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
 import { getError } from '../utils/error'
 import { Store } from '../utils/Store'
+import toRupiah from '@develoka/angka-rupiah-js'
 
 export default function PlaceOrderScreen() {
     const { state, dispatch } = useContext(Store);
     const { cart } = state;
-    const { cartItems, shippingAddress, paymentMethod } = cart;
+    const { cartItems, personalData, paymentMethod } = cart;
     const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
 
     const itemsPrice = round2(cartItems.reduce((a, c) => a + c.quantity * c.price, 0));
-    const shippingPrice = itemsPrice > 200 ? 0 : 15;
-    const taxPrice = round2(itemsPrice * 0.15);
-    const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
+    const uniqueCode = round2((Math.floor(Math.random() * 3) + 2) * 1000);
+    const totalPrice = round2(itemsPrice + uniqueCode);
 
     const router = useRouter();
 
@@ -36,11 +36,10 @@ export default function PlaceOrderScreen() {
             setLoading(true);
             const { data } = await axios.post('/api/orders', {
                 orderItems: cartItems,
-                shippingAddress,
+                personalData,
                 paymentMethod,
                 itemsPrice,
-                shippingPrice,
-                taxPrice,
+                uniqueCode,
                 totalPrice,
             });
             setLoading(false);
@@ -72,11 +71,13 @@ export default function PlaceOrderScreen() {
                     <div className='grid md:grid-cols-4 md:gap-5'>
                         <div className='overflow-x-auto md:col-span-3'>
                             <div className='card p-5'>
-                                <h2 className='mb-2 text-lg'>Shipping Address</h2>
+                                <h2 className='mb-2 text-lg'>Personal Data</h2>
                                 <div>
-                                    {shippingAddress.fullName}, {shippingAddress.address},{' '}
-                                    {shippingAddress.city}, {shippingAddress.postalCode}, {' '}
-                                    {shippingAddress.country}
+                                    {personalData.fullName} <br />
+                                    {personalData.emailAddress} <br />
+                                    {personalData.phoneNumber} <br />
+                                    {personalData.identityNumber} <br />
+                                    {personalData.location}
                                 </div>
                                 <div>
                                     <Link href='/shipping'>Edit</Link>
@@ -119,7 +120,7 @@ export default function PlaceOrderScreen() {
                                                 </td>
                                                 <td className='p-5 text-right'>{item.quantity}</td>
                                                 <td className='p-5 text-right'>{item.price}</td>
-                                                <td className='p-5 text-right'>${item.quantity * item.price}</td>
+                                                <td className='p-5 text-right'>{toRupiah(item.quantity * item.price, { dot: ',', formal: false, floatingPoint: 0 })}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -136,25 +137,19 @@ export default function PlaceOrderScreen() {
                                     <li>
                                         <div className='mb-2 flex justify-between'>
                                             <div>Items</div>
-                                            <div>${itemsPrice}</div>
+                                            <div>{toRupiah(itemsPrice, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                         </div>
                                     </li>
                                     <li>
                                         <div className='mb-2 flex justify-between'>
-                                            <div>Tax</div>
-                                            <div>${taxPrice}</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className='mb-2 flex justify-between'>
-                                            <div>Shipping</div>
-                                            <div>${shippingPrice}</div>
+                                            <div>Unique Code</div>
+                                            <div>{toRupiah(uniqueCode, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                         </div>
                                     </li>
                                     <li>
                                         <div className='mb-2 flex justify-between'>
                                             <div>Total</div>
-                                            <div>${totalPrice}</div>
+                                            <div>{toRupiah(totalPrice, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                         </div>
                                     </li>
                                     <li>

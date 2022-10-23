@@ -6,7 +6,7 @@ import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
 import { Store } from '../utils/Store';
 
-export default function ShippingScreen() {
+export default function PersonalDataScreen() {
     const {
         handleSubmit,
         register,
@@ -16,32 +16,32 @@ export default function ShippingScreen() {
 
     const { state, dispatch } = useContext(Store);
     const { cart } = state;
-    const { shippingAddress } = cart;
+    const { personalData } = cart;
     const router = useRouter();
 
     useEffect(() => {
-        setValue('fullName', shippingAddress.fullName);
-        setValue('address', shippingAddress.address);
-        setValue('city', shippingAddress.city);
-        setValue('postalCode', shippingAddress.postalCode);
-        setValue('country', shippingAddress.country);
-    }, [setValue, shippingAddress])
+        setValue('fullName', personalData.fullName);
+        setValue('emailAddress', personalData.emailAddress);
+        setValue('phoneNumber', personalData.phoneNumber);
+        setValue('identityNumber', personalData.identityNumber);
+        setValue('location', personalData.location);
+    }, [setValue, personalData])
 
-    const submitHandler = ({ fullName, address, city, postalCode, country }) => {
+    const submitHandler = ({ fullName, emailAddress, phoneNumber, identityNumber, location }) => {
         dispatch({
-            type: 'SAVE_SHIPPING_ADDRESS',
-            payload: { fullName, address, city, postalCode, country },
+            type: 'SAVE_PERSONAL_DATA',
+            payload: { fullName, emailAddress, phoneNumber, identityNumber, location },
         });
         Cookies.set(
             'cart',
             JSON.stringify({
                 ...cart,
-                shippingAddress: {
+                personalData: {
                     fullName,
-                    address,
-                    city,
-                    postalCode,
-                    country,
+                    emailAddress,
+                    phoneNumber,
+                    identityNumber,
+                    location,
                 },
             })
         );
@@ -54,7 +54,7 @@ export default function ShippingScreen() {
                 className='mx-auto max-w-screen-md'
                 onSubmit={handleSubmit(submitHandler)}
             >
-                <h1 className='mb-4 text-xl'>Shipping Address</h1>
+                <h1 className='mb-4 text-xl'>Personal Data</h1>
                 <div className='mb-4'>
                     <label htmlFor='fullName'>Full name</label>
                     <input
@@ -70,26 +70,29 @@ export default function ShippingScreen() {
                     )}
                 </div>
                 <div className='mb-4'>
-                    <label htmlFor='address'>Address</label>
+                    <label htmlFor='emailAddress'>Email</label>
                     <input
                         className='w-full'
-                        id='address'
-                        {...register('address', {
-                            required: 'Please enter address',
-                            minLength: { value: 3, message: 'Address is more than 2 chars' },
+                        id='emailAddress'
+                        {...register('emailAddress', {
+                            required: 'Please enter email',
+                            pattern: {
+                                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                                message: 'Please enter valid email'
+                            },
                         })}
                     />
-                    {errors.address && (
-                        <div className='text-red-500'>{errors.address.message}</div>
+                    {errors.emailAddress && (
+                        <div className='text-red-500'>{errors.emailAddress.message}</div>
                     )}
                 </div>
                 <div className='mb-4'>
-                    <label htmlFor='city'>City</label>
+                    <label htmlFor='phoneNumber'>Phone Number / Whatsapp</label>
                     <input
                         className='w-full'
-                        id='city'
-                        {...register('city', {
-                            required: 'Please enter address',
+                        id='phoneNumber'
+                        {...register('phoneNumber', {
+                            required: 'Please enter phone number',
                         })}
                     />
                     {errors.city && (
@@ -97,29 +100,29 @@ export default function ShippingScreen() {
                     )}
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="postalCode">Postal Code</label>
+                    <label htmlFor="identityNumber">NIK</label>
                     <input
                         className="w-full"
-                        id="postalCode"
-                        {...register('postalCode', {
+                        id="identityNumber"
+                        {...register('identityNumber', {
                             required: 'Please enter postal code',
                         })}
                     />
-                    {errors.postalCode && (
-                        <div className="text-red-500 ">{errors.postalCode.message}</div>
+                    {errors.identityNumber && (
+                        <div className="text-red-500 ">{errors.identityNumber.message}</div>
                     )}
                 </div>
                 <div className='mb-4'>
-                    <label htmlFor='country'>Country</label>
+                    <label htmlFor='location'>Location</label>
                     <input
                         className='w-full'
-                        id='country'
-                        {...register('country', {
-                            required: 'Please enter country',
+                        id='location'
+                        {...register('location', {
+                            required: 'Please enter location',
                         })}
                     />
-                    {errors.country && (
-                        <div className='text-red-500'>{errors.country.message}</div>
+                    {errors.location && (
+                        <div className='text-red-500'>{errors.location.message}</div>
                     )}
                 </div>
                 <div className='mb-4 flex justify-between'>
@@ -131,4 +134,4 @@ export default function ShippingScreen() {
 }
 
 
-ShippingScreen.auth = true;
+PersonalDataScreen.auth = true;

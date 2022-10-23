@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Link from 'next/link';
 import { Bar } from 'react-chartjs-2';
+import toRupiah from '@develoka/angka-rupiah-js'
 
 import {
     Chart as ChartJS,
@@ -107,7 +108,7 @@ function AdminDashboardScreen() {
                         <div>
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="card m-5 p-5">
-                                    <p className="text-3xl">${summary.ordersPrice} </p>
+                                    <p className="text-3xl">{toRupiah(summary.ordersPrice, { dot: ',', formal: false, floatingPoint: 0 })} </p>
                                     <p>Sales</p>
                                     <Link href="/admin/orders">View sales</Link>
                                 </div>

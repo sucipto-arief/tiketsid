@@ -98,7 +98,7 @@ function CartScreen() {
                                 </div>
                             </li>
                             <li>
-                                <button onClick={() => router.push('login?redirect=/shipping')} className='primary-button w-full'>
+                                <button onClick={() => router.push('login?redirect=/personal-data')} className='primary-button w-full'>
                                     Check out
                                 </button>
                             </li>
