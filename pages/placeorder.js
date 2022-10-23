@@ -18,7 +18,7 @@ export default function PlaceOrderScreen() {
     const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
 
     const itemsPrice = round2(cartItems.reduce((a, c) => a + c.quantity * c.price, 0));
-    const uniqueCode = round2((Math.floor(Math.random() * 3) + 2) * 1000);
+    const uniqueCode = round2(Math.floor(Math.random() * 1000) + 2000);
     const totalPrice = round2(itemsPrice + uniqueCode);
 
     const router = useRouter();
