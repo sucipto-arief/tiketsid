@@ -43,7 +43,7 @@ function reducer(state, action) {
         case 'CART_CLEAR_ITEMS':
             return { ...state, cart: { ...state.cart, cartItems: [] } };
             
-        case 'SAVE_SHIPPING_ADDRESS':
+        case 'SAVE_PERSONAL_DATA':
             return {
                 ...state,
                 cart: {

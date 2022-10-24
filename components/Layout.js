@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
+import TawkMessengerReact from '@tawk.to/tawk-messenger-react';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Store } from '../utils/Store'
@@ -10,9 +11,8 @@ import DropdownLink from '../components/DropdownLink'
 import Cookies from 'js-cookie'
 
 export default function Layout({ title, children }) {
-
+    const tawkMessengerRef = useRef();
     const { status, data: session } = useSession();
-
     const { state, dispatch } = useContext(Store);
     const { cart } = state;
     const [cartItemsCount, setcartItemsCount] = useState(0);
@@ -104,6 +104,12 @@ export default function Layout({ title, children }) {
                     </nav>
                 </header>
                 <main className='container m-auto mt-4 px-4'>{children}</main>
+                <div>
+                    <TawkMessengerReact
+                        propertyId='6356802fdaff0e1306d3a9ac'
+                        widgetId='1gg4u9f2b'
+                        useRef={tawkMessengerRef} />
+                </div>
                 <footer className='flex h-10 justify-center items-center shadow-inner'>
                     <p>Copyright © 2022 - All right reserved by <Link href={'/'} passHref><a>tikets.id</a></Link></p>
                 </footer>

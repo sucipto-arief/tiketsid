@@ -1,6 +1,6 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import axios from "axios";
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,6 +8,7 @@ import { useEffect, useReducer } from "react";
 import { toast } from "react-toastify";
 import Layout from "../../components/Layout";
 import { getError } from "../../utils/error";
+import toRupiah from '@develoka/angka-rupiah-js'
 
 
 function reducer(state, action) {
@@ -26,18 +27,6 @@ function reducer(state, action) {
             return { ...state, loadingPay: false, successPay: action.payload };
         case 'PAY_RESET':
             return { ...state, loadingPay: false, successPay: false, errorPay: '' };
-        case 'DELIVER_REQUEST':
-            return { ...state, loadingDeliver: true };
-        case 'DELIVER_SUCCESS':
-            return { ...state, loadingDeliver: false, successDeliver: true };
-        case 'DELIVER_FAIL':
-            return { ...state, loadingDeliver: false };
-        case 'DELIVER_RESET':
-            return {
-                ...state,
-                loadingDeliver: false,
-                successDeliver: false,
-            };
         default:
             state;
     }
@@ -46,7 +35,7 @@ function reducer(state, action) {
 
 function OrderScreen() {
     // order/:id
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
     const { query } = useRouter();
     const orderId = query.id;
@@ -58,8 +47,6 @@ function OrderScreen() {
             order,
             successPay,
             loadingPay,
-            loadingDeliver,
-            successDeliver,
         },
         dispatch,
     ] = useReducer(reducer, {
@@ -80,15 +67,11 @@ function OrderScreen() {
         if (
             !order._id ||
             successPay ||
-            successDeliver ||
             (order._id && order._id !== orderId)
         ) {
             fetchOrder();
             if (successPay) {
                 dispatch({ type: 'PAY_RESET' });
-            }
-            if (successDeliver) {
-                dispatch({ type: 'DELIVER_RESET' });
             }
         } else {
             const loadPaypalScript = async () => {
@@ -104,19 +87,16 @@ function OrderScreen() {
             };
             loadPaypalScript();
         }
-    }, [order, orderId, paypalDispatch, successDeliver, successPay]);
+    }, [order, orderId, paypalDispatch, successPay]);
     const {
-        shippingAddress,
+        personalData,
         paymentMethod,
         orderItems,
         itemsPrice,
-        taxPrice,
-        shippingPrice,
+        uniqueCode,
         totalPrice,
         isPaid,
         paidAt,
-        isDelivered,
-        deliveredAt,
     } = order;
 
     function createOrder(data, actions) {
@@ -152,20 +132,20 @@ function OrderScreen() {
     function onError(err) {
         toast.error(getError(err));
     }
-    async function deliverOrderHandler() {
-        try {
-            dispatch({ type: 'DELIVER_REQUEST' });
-            const { data } = await axios.put(
-                `/api/admin/orders/${order._id}/deliver`,
-                {}
-            );
-            dispatch({ type: 'DELIVER_SUCCESS', payload: data });
-            toast.success('Order is delivered');
-        } catch (err) {
-            dispatch({ type: 'DELIVER_FAIL', payload: getError(err) });
-            toast.error(getError(err));
-        }
-    }
+    // async function deliverOrderHandler() {
+    //     try {
+    //         dispatch({ type: 'DELIVER_REQUEST' });
+    //         const { data } = await axios.put(
+    //             `/api/admin/orders/${order._id}/deliver`,
+    //             {}
+    //         );
+    //         dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+    //         toast.success('Order is delivered');
+    //     } catch (err) {
+    //         dispatch({ type: 'DELIVER_FAIL', payload: getError(err) });
+    //         toast.error(getError(err));
+    //     }
+    // }
 
     return <Layout title={`Order ${orderId}`}>
         <h1 className="mb-4 text-xl">{`Order ${orderId}`}</h1>
@@ -177,17 +157,14 @@ function OrderScreen() {
             <div className="grid md:grid-cols-4 md:gap-5">
                 <div className="overflow-x-auto md:col-span-3">
                     <div className="card p-5">
-                        <h2 className="mb-2 text-lg">Shipping Address</h2>
+                        <h2 className="mb-2 text-lg">Personal Data</h2>
                         <div>
-                            {shippingAddress.fullName}, {shippingAddress.address}, {' '}
-                            {shippingAddress.city}, {shippingAddress.postalCode}, {' '}
-                            {shippingAddress.country}
+                            {personalData.fullName} <br />
+                            {personalData.emailAddress} <br />
+                            {personalData.phoneNumber} <br />
+                            {personalData.identityNumber} <br />
+                            {personalData.location}
                         </div>
-                        {isDelivered ? (
-                            <div className="alert-success">Delivered at {deliveredAt}</div>
-                        ) : (
-                            <div className="alert-error">Not Delivered</div>
-                        )}
                     </div>
                     <div className="card p-5">
                         <h2 className="mb-2 text-lg">Payment Method</h2>
@@ -228,7 +205,7 @@ function OrderScreen() {
                                         </td>
                                         <td className='p-5 text-right'>{item.quantity}</td>
                                         <td className='p-5 text-right'>{item.price}</td>
-                                        <td className='p-5 text-right'>${item.quantity * item.price}</td>
+                                        <td className='p-5 text-right'>{toRupiah((item.quantity * item.price), { dot: ',', formal: false, floatingPoint: 0 })}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -242,25 +219,19 @@ function OrderScreen() {
                             <li>
                                 <div className='mb-2 flex justify-between'>
                                     <div>Items</div>
-                                    <div>${itemsPrice}</div>
+                                    <div>{toRupiah(itemsPrice, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                 </div>
                             </li>{' '}
                             <li>
                                 <div className='mb-2 flex justify-between'>
                                     <div>Tax</div>
-                                    <div>${taxPrice}</div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="mb-2 flex justify-between">
-                                    <div>Shipping</div>
-                                    <div>${shippingPrice}</div>
+                                    <div>{toRupiah(uniqueCode, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                 </div>
                             </li>
                             <li>
                                 <div className='mb-2 flex justify-between'>
                                     <div>Total</div>
-                                    <div>${totalPrice}</div>
+                                    <div>{toRupiah(totalPrice, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                 </div>
                             </li>
                             {!isPaid && (
@@ -276,17 +247,6 @@ function OrderScreen() {
                                             </div>
                                         )}
                                     {loadingPay && <div>Loading...</div>}
-                                </li>
-                            )}
-                            {session.user.isAdmin && order.isPaid && !order.isDelivered && (
-                                <li>
-                                    {loadingDeliver && <div>Loading...</div>}
-                                    <button
-                                        className="primary-button w-full"
-                                        onClick={deliverOrderHandler}
-                                    >
-                                        Deliver Order
-                                    </button>
                                 </li>
                             )}
                         </ul>

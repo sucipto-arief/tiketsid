@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { useEffect, useReducer } from 'react';
 import Layout from '../../components/Layout';
 import { getError } from '../../utils/error';
+import toRupiah from '@develoka/angka-rupiah-js'
 
 function reducer(state, action) {
     switch (action.type) {
@@ -83,7 +84,7 @@ function AdminOrderScreen() {
                                             <td className="p-5">{order._id.substring(20, 24)}</td>
                                             <td className="p-5">{order.user ? order.user.name : 'DELETED USER'}</td>
                                             <td className="p-5">{order.createdAt.substring(0, 10)}</td>
-                                            <td className="p-5">${order.totalPrice}</td>
+                                            <td className="p-5">{toRupiah(order.totalPrice, { dot: ',', formal: false, floatingPoint: 0 })}</td>
                                             <td className="p-5">
                                                 {order.isPaid
                                                     ? `${order.paidAt.substring(0, 10)}`

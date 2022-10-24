@@ -42,7 +42,7 @@ export default function PaymentScreen() {
             <form className='mx-auto max-w-screen-md' onSubmit={submitHandler}>
                 <h1 className='mb-4 text-xl'>Payment Method</h1>
                 {
-                    ['Paypal', 'Stripe', 'CashOnDelivery'].map((payment) => (
+                    ['Ovo', 'ShopeePay', 'Qris'].map((payment) => (
                         <div key={payment} className='mb-4'>
                             <input
                                 name='paymentMethod'

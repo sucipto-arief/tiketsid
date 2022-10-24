@@ -13,7 +13,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
             <Auth adminOnly={Component.auth.adminOnly}>
               <Component   {...pageProps} />
             </Auth>
-          ) : (<Component   {...pageProps} />
+          ) : (
+            <Component   {...pageProps} />
           )}
         </PayPalScriptProvider>
       </StoreProvider>

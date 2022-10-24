@@ -18,7 +18,7 @@ export default function PlaceOrderScreen() {
     const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
 
     const itemsPrice = round2(cartItems.reduce((a, c) => a + c.quantity * c.price, 0));
-    const uniqueCode = round2(Math.floor(Math.random() * 1000) + 2000);
+    const uniqueCode = round2(Math.floor(Math.random() * 100) + 3000);
     const totalPrice = round2(itemsPrice + uniqueCode);
 
     const router = useRouter();
@@ -119,7 +119,7 @@ export default function PlaceOrderScreen() {
                                                     </Link>
                                                 </td>
                                                 <td className='p-5 text-right'>{item.quantity}</td>
-                                                <td className='p-5 text-right'>{item.price}</td>
+                                                <td className='p-5 text-right'>{toRupiah(item.price, { dot: ',', formal: false, floatingPoint: 0 })}</td>
                                                 <td className='p-5 text-right'>{toRupiah(item.quantity * item.price, { dot: ',', formal: false, floatingPoint: 0 })}</td>
                                             </tr>
                                         ))}
@@ -147,7 +147,7 @@ export default function PlaceOrderScreen() {
                                         </div>
                                     </li>
                                     <li>
-                                        <div className='mb-2 flex justify-between'>
+                                        <div className='mb-2 flex justify-between font-bold'>
                                             <div>Total</div>
                                             <div>{toRupiah(totalPrice, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                         </div>
