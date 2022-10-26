@@ -224,7 +224,7 @@ function OrderScreen() {
                             </li>{' '}
                             <li>
                                 <div className='mb-2 flex justify-between'>
-                                    <div>Tax</div>
+                                    <div>Unique Code</div>
                                     <div>{toRupiah(uniqueCode, { dot: ',', formal: false, floatingPoint: 0 })}</div>
                                 </div>
                             </li>
