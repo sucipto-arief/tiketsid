@@ -18,6 +18,7 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^3.9.1",
     "cloudinary": "^1.32.0",
+    "form-data": "^4.0.0",
     "install": "^0.13.0",
     "js-cookie": "^3.0.1",
     "mongoose": "^6.6.5",
