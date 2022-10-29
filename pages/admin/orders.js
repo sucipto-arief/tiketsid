@@ -61,7 +61,7 @@ function AdminOrderScreen() {
                 <div className="overflow-x-auto md:col-span-3">
                     <h1 className="mb-4 text-xl">Admin Orders</h1>
                     {loading ? (
-                        <div>Loading...</div>
+                        <div><progress className="progress w-56"></progress></div>
                     ) : error ? (
                         <div className="alert-error">{error}</div>
                     ) : (

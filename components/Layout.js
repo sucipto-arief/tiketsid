@@ -38,7 +38,7 @@ export default function Layout({ title, children }) {
 
             <div className='flex min-h-screen flex-col justify-between bg-neutral-50'>
                 <header>
-                    <nav className='flex h-12 items-center px-4 justify-between shadow-md bg-slate-700'>
+                    <nav className='flex h-12 items-center px-4 justify-between shadow-lg bg-slate-700'>
                         <Link href={'/'}>
                             <a className='text-2xl ml-4 font-bold'>tikets.id</a>
                         </Link>

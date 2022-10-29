@@ -92,7 +92,7 @@ function AdminUsersScreen() {
                     <h1 className="mb-4 text-xl">Users</h1>
                     {loadingDelete && <div>Deleting...</div>}
                     {loading ? (
-                        <div>Loading...</div>
+                        <div><progress className="progress w-56"></progress></div>
                     ) : error ? (
                         <div className="alert-error">{error}</div>
                     ) : (

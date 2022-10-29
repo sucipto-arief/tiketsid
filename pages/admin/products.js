@@ -125,7 +125,7 @@ export default function AdminProdcutsScreen() {
                         </button>
                     </div>
                     {loading ? (
-                        <div>Loading...</div>
+                        <div><progress className="progress w-56"></progress></div>
                     ) : error ? (
                         <div className="alert-error">{error}</div>
                     ) : (
